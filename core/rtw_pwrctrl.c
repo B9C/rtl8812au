@@ -46,7 +46,7 @@ void ips_enter(_adapter * padapter)
 	if(rf_off == pwrpriv->change_rfpwrstate )
 	{	
 		pwrpriv->bpower_saving = _TRUE;
-		DBG_871X_LEVEL(_drv_always_, "nolinked power save enter\n");
+		//DBG_871X_LEVEL(_drv_always_, "nolinked power save enter\n");
 
 		if(pwrpriv->ips_mode == IPS_LEVEL_2)
 			pwrpriv->bkeepfwalive = _TRUE;
@@ -81,7 +81,7 @@ int ips_leave(_adapter * padapter)
 		if ((result = rtw_ips_pwr_up(padapter)) == _SUCCESS) {
 			pwrpriv->rf_pwrstate = rf_on;
 		}
-		DBG_871X_LEVEL(_drv_always_, "nolinked power save leave\n");
+		//DBG_871X_LEVEL(_drv_always_, "nolinked power save leave\n");
 
 		if((_WEP40_ == psecuritypriv->dot11PrivacyAlgrthm) ||(_WEP104_ == psecuritypriv->dot11PrivacyAlgrthm))
 		{

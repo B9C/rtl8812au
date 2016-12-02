@@ -434,19 +434,21 @@ void rtw_proc_init_one(struct net_device *dev)
 
 	rtw_proc_cnt++;
 
-	entry = create_proc_read_write_entry("write_reg", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_write_reg, dev, proc_set_write_reg);
-	if (!entry) {
-		DBG_871X("Unable to create_proc_read_entry!\n");
-		return;
-	}
+	entry = create_proc_read_entry("write_reg", S_IFREG | S_IRUGO, dir_dev, proc_get_write_reg, dev);
 
-	entry = create_proc_read_write_entry("read_reg", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_read_reg, dev, proc_set_read_reg);
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;
 	}
+	entry->write_proc = proc_set_write_reg;
+
+	entry = create_proc_read_entry("read_reg", S_IFREG | S_IRUGO,
+		dir_dev, proc_get_read_reg, dev);
+	if (!entry) {
+		DBG_871X("Unable to create_proc_read_entry!\n");
+		return;
+	}
+	entry->write_proc = proc_set_read_reg;
 
 	entry = create_proc_read_entry("fwstate", S_IFREG | S_IRUGO,
 				   dir_dev, proc_get_fwstate, dev);
@@ -612,54 +614,61 @@ void rtw_proc_init_one(struct net_device *dev)
 	}
 #endif
 
-	entry = create_proc_read_write_entry("rx_signal", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_rx_signal, dev, proc_set_rx_signal);
+	entry = create_proc_read_entry("rx_signal", S_IFREG | S_IRUGO,
+		dir_dev, proc_get_rx_signal, dev);
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;
 	}
+	entry->write_proc = proc_set_rx_signal;
 #ifdef CONFIG_80211N_HT
-	entry = create_proc_read_write_entry("ht_enable", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_ht_enable, dev, proc_set_ht_enable);
+	entry = create_proc_read_entry("ht_enable", S_IFREG | S_IRUGO,
+		dir_dev, proc_get_ht_enable, dev);
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;
 	}
+	entry->write_proc = proc_set_ht_enable;
 
-	entry = create_proc_read_write_entry("bw_mode", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_bw_mode, dev, proc_set_bw_mode);
+	entry = create_proc_read_entry("bw_mode", S_IFREG | S_IRUGO,
+		dir_dev, proc_get_bw_mode, dev);
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;
 	}
+	entry->write_proc = proc_set_bw_mode;
 
-	entry = create_proc_read_write_entry("ampdu_enable", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_ampdu_enable, dev, proc_set_ampdu_enable);
+	entry = create_proc_read_entry("ampdu_enable", S_IFREG | S_IRUGO,
+		dir_dev, proc_get_ampdu_enable, dev);
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;
 	}
+	entry->write_proc = proc_set_ampdu_enable;
 
-	entry = create_proc_read_write_entry("rx_stbc", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_rx_stbc, dev, proc_set_rx_stbc);
+	entry = create_proc_read_entry("rx_stbc", S_IFREG | S_IRUGO,
+		dir_dev, proc_get_rx_stbc, dev);
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;
 	}
+	entry->write_proc = proc_set_rx_stbc;
 #endif //CONFIG_80211N_HT
 
 	entry = create_proc_read_entry("path_rssi", S_IFREG | S_IRUGO,
 					dir_dev, proc_get_two_path_rssi, dev);
 
-	entry = create_proc_read_write_entry("rssi_disp", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_rssi_disp, dev, proc_set_rssi_disp);
+	entry = create_proc_read_entry("rssi_disp", S_IFREG | S_IRUGO,
+		dir_dev, proc_get_rssi_disp, dev);
+
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;
 	}
 #ifdef CONFIG_BT_COEXIST
-	entry = create_proc_read_write_entry("btcoex_dbg", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_btcoex_dbg, dev, proc_set_btcoex_dbg);
+	entry = create_proc_read_entry("btcoex_dbg", S_IFREG | S_IRUGO,
+		dir_dev, proc_get_btcoex_dbg, dev);
+
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;
@@ -667,8 +676,9 @@ void rtw_proc_init_one(struct net_device *dev)
 #endif /*CONFIG_BT_COEXIST*/
 
 #if defined(DBG_CONFIG_ERROR_DETECT)
-	entry = create_proc_read_write_entry("sreset", S_IFREG | S_IRUGO,
-				   dir_dev, proc_get_sreset, dev, proc_set_sreset);
+	entry = create_proc_read_entry("sreset", S_IFREG | S_IRUGO,
+		dir_dev, proc_get_sreset, dev);
+
 	if (!entry) {
 		DBG_871X("Unable to create_proc_read_entry!\n");
 		return;
